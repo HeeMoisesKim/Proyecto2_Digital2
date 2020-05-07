@@ -818,23 +818,21 @@ unsigned char Char_uChar(char value){
 // Función que lee y despliega de la SD
 //***************************************************************************************************************************************
 void SD_Bitmap(int x, int y, int width, int height, char *filename){
-  uint16_t xt;
-  uint16_t yt;
+  uint16_t SD_x;
+  uint16_t SD_y;
   uint16_t ent;
   uint16_t contador = 1;
   uint16_t temp;
   uint16_t temp2;
   uint16_t linea_salto = 1;
-  uint16_t trash;
-  uint16_t trash2; 
   myFile = SD.open(filename);
   LCD_CMD(0x02c); //write_memory_start
   digitalWrite(LCD_RS, HIGH);
   digitalWrite(LCD_CS, LOW);
   SetWindows(x,y,x+width-1,y+height-1);
   if (myFile){
-    xt = x;
-    yt = y;
+    SD_x = x;
+    SD_y = y;
     while (myFile.available()) {
       uint16_t leer = myFile.read();
       leer = Char_uChar(leer);
@@ -859,10 +857,10 @@ void SD_Bitmap(int x, int y, int width, int height, char *filename){
           temp = temp+leer;
           LCD_DATA(temp>>8);
           LCD_DATA(temp);
-          xt = xt+1;
-          if(xt==((x+width))){
-            xt = x;
-            yt = yt+1;
+          SD_x = SD_x+1;
+          if(SD_x==((x+width))){
+            SD_x = x;
+            SD_y = SD_y+1;
           }
         }
         
